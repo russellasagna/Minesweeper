@@ -4,14 +4,14 @@
 // Time elapse, tiles, and grid size should change.
 
 /*----- app's state (variables) -----*/
-let board; // n x n board array
-let boardWin; // winner n x n board array
-let badTiles; // Array to hold bad tiles
-let goodTiles; // Array to hold good tiles
+let boardSize; // n x n board
+let timeStatus; // 0 -> off; 1 -> on;
 let timeElapsed; // Number to count seconds in realtime
-let gameStatus; // null -> game in progress; 'W' -> won; 'L' -> lost
+let gameStatus; // null -> game ready; 'W' -> won; 'L' -> lost
 
 /*----- cached element references -----*/
+const selectBtn = document.querySelector("select");
+const boardMain = document.getElementById("board");
 // const tileBtns = Array.from(document.querySelectorAll('article > button')); // One way to iterate
 // const tileBtns = [...document.querySelectorAll('div > button')]; // Another way to iterate
 // const happyFace = document.querySelector('button'); // Windows 98 play button
@@ -24,9 +24,10 @@ let gameStatus; // null -> game in progress; 'W' -> won; 'L' -> lost
 init();
 
 function init() {
-// initialize board
-// initialize gameStatus
-// initialize timer
+    boardSize = 8;
+    timeElapsed = 0;
+    gameStatus = null;
+    render();
 }
 
 function render() {
