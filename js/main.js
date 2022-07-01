@@ -17,3 +17,10 @@ let gameStatus; // null -> game ready; 'W' -> won; 'L' -> lost
 
 
 /*----- functions -----*/
+
+function init() {
+    board = 9;
+    timeStatus = 0;
+    timeElapsed = 0;
+    gameStatus = 0;
+}
