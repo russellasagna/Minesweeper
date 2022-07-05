@@ -43,11 +43,21 @@ h3 + select {
     border: 0.1vmin solid black;
 }
 
-#play {
-    background-color: white;
+button {
     width: 8vmin;
     height: 8vmin;
     font-size: 4vmin;
+}
+
+#play {
+    background-color: white;
+    color: black;
+    
+}
+
+#retry {
+    background-color: black;
+    color: white;
 }
 
 .mine {

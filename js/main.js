@@ -59,6 +59,8 @@ function handleClick(evt) {
             break;
         case "-1": 
             board[idx].className = "mine";
+            playBtn.textContent = "):";
+            playBtn.id = "retry";
             gameStatus = "L";
             break;
     }
