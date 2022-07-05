@@ -40,7 +40,6 @@ h3 + select {
 }
 
 #board > div {
-    background-color: #DEB58E;
     border: 0.1vmin solid black;
 }
 
@@ -49,4 +48,11 @@ h3 + select {
     width: 8vmin;
     height: 8vmin;
     font-size: 4vmin;
+}
+
+.mine {
+    background-color: black;
+}
+.clear {
+    background-color: white;
 }
