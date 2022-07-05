@@ -25,6 +25,8 @@ document.getElementById("play").addEventListener("click", init);
 init();
 
 function init() {
+    playBtn.textContent = ":)";
+    playBtn.id = "play";
     board = [...document.querySelectorAll("#board > div")];
     boardSize = 9;
     tileClears = 0; 
