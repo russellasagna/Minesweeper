@@ -17,12 +17,11 @@ let right; // direction from click position
 let downLeft; // direction from click position
 let downDown; // direction from click position
 let downRight; // direction from click position
-
+let directions; // array of directions from click position
 
 /*----- cached element references -----*/
 const tileEls = [...document.querySelectorAll("#board > div")]; // spread
 const playBtn = document.getElementById("play");
-
 
 /*----- event listeners -----*/
 document.getElementById("board").addEventListener("click", handleClick);
@@ -33,6 +32,7 @@ document.getElementById("play").addEventListener("click", init);
 init();
 
 function init() {
+    console.clear();
     playBtn.textContent = ":)";
     playBtn.id = "play";
     tileClears = 0;
@@ -40,6 +40,7 @@ function init() {
     timeStatus = 0;
     timeElapsed = 0;
     gameStatus = null;
+    directions = [];
     boardSize = 9;
     board = [...document.querySelectorAll("#board > div")];
     // map mines below
@@ -73,11 +74,18 @@ function renderMines() {
 
 }
 
-function renderSpace() {
+function renderSpace(evt) {
     const idx = tileEls.indexOf(evt.target);
     let space = 10;
-    while (space > 0) {
-
+    getPerimeter(idx);
+    while (directions.length > 0) {
+        let direction = directions[Math.floor(Math.random() * directions.length)];
+        console.log("Safe Tile: " + idx);
+        if (direction.classList.contains("good")) {
+            direction.className = "clear";
+            console.log("Space Tile: " + board.indexOf(direction));
+        }
+        directions.splice(directions.indexOf(direction), 1);
     }
 }
 
@@ -90,6 +98,11 @@ function getPerimeter(idx) {
     downDown = board[idx + boardSize];
     downLeft = board[idx + boardSize - 1];
     downRight = board[idx + boardSize + 1];
+    directions.unshift(
+        upup, upLeft, upRight, 
+        left, right,
+        downDown, downLeft, downRight
+    );
 }
 
 function handleClick(evt) {
@@ -106,6 +119,7 @@ function handleClick(evt) {
         board[idx].className = "clear";
         tileClears--;
         getPerimeter(idx);
+        renderSpace(evt);
     } else {
         if (
             marks.contains("good") &&
@@ -123,8 +137,6 @@ function handleClick(evt) {
     }
     render();
 }
-
-
 
 function handleFlag(evt) {
     evt.preventDefault();
