@@ -66,3 +66,7 @@ button {
 .clear {
     background-color: white;
 }
+
+.flag {
+    background-color: red;
+}

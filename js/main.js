@@ -18,6 +18,7 @@ const playBtn = document.getElementById("play");
 
 /*----- event listeners -----*/
 document.getElementById("board").addEventListener("click", handleClick);
+document.getElementById("board").addEventListener("contextmenu", handleFlag);
 document.getElementById("play").addEventListener("click", init);
 
 /*----- functions -----*/
@@ -59,19 +60,22 @@ function render() {
 }
 
 function handleClick(evt) {
+    const idx = tileEls.indexOf(evt.target);
     // Guards
     if (
         gameStatus !== null ||
-        !tileEls.includes(evt.target)
+        !tileEls.includes(evt.target) ||
+        board[idx].classList.contains("flag")
     ) return;
-
     // update tile when clicked
-    const idx = tileEls.indexOf(evt.target);
     if (tileClears + tileMines === Math.pow(boardSize, 2)) { // first tile is safe
         board[idx].className = "clear";
         tileClears--;
     } else {
-        if (board[idx].classList.contains("good")) {
+        if (
+            board[idx].classList.contains("good") &&
+            !board[idx].classList.contains("flag")
+        ) {
             board[idx].className = "clear";
             tileClears--;
         } else if (board[idx].classList.contains("bad")) {
@@ -86,4 +90,15 @@ function handleClick(evt) {
 
 function handleFlag(evt) {
     evt.preventDefault();
+    const idx = tileEls.indexOf(evt.target);
+    if (
+        gameStatus !== null ||
+        !tileEls.includes(evt.target) ||
+        board[idx].classList.contains("clear")
+    ) return;
+    if (!board[idx].classList.contains("flag")) { 
+        board[idx].classList.add("flag");
+    } else {
+        board[idx].classList.remove("flag");
+    }
 }
