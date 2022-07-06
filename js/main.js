@@ -9,7 +9,15 @@ let tileClears; // number of clears set by init()
 let tileMines; // number of mines set by init()
 let timeStatus; // 0 -> off; 1 -> on;
 let timeElapsed; // Number to count seconds in realtime
-let gameStatus; // null -> game ready; 'W' -> won; 'L' -> lost
+let gameStatus; // null -> game ready; 'W' -> won; 'L' -> lostlet upup = board[idx - boardSize];
+let upLeft; // direction from click position
+let upRight; // direction from click position
+let left; // direction from click position
+let right; // direction from click position
+let downLeft; // direction from click position
+let downDown; // direction from click position
+let downRight; // direction from click position
+
 
 /*----- cached element references -----*/
 const tileEls = [...document.querySelectorAll("#board > div")]; // spread
@@ -57,28 +65,56 @@ function init() {
 
 function render() {
     // update tiles nearby mines using array logic
+    renderMines();
+}
+
+function renderMines() {
+    // Guards
+
+}
+
+function renderSpace() {
+    const idx = tileEls.indexOf(evt.target);
+    let space = 10;
+    while (space > 0) {
+
+    }
+}
+
+function getPerimeter(idx) {
+    upup = board[idx - boardSize];
+    upLeft = board[idx - boardSize - 1];
+    upRight = board[idx - boardSize + 1];
+    left = board[idx - 1];
+    right = board[idx + 1];
+    downDown = board[idx + boardSize];
+    downLeft = board[idx + boardSize - 1];
+    downRight = board[idx + boardSize + 1];
 }
 
 function handleClick(evt) {
     const idx = tileEls.indexOf(evt.target);
+    const marks = board[idx].classList;
     // Guards
     if (
         gameStatus !== null ||
         !tileEls.includes(evt.target) ||
-        board[idx].classList.contains("flag")
+        marks.contains("flag")
     ) return;
     // update tile when clicked
     if (tileClears + tileMines === Math.pow(boardSize, 2)) { // first tile is safe
         board[idx].className = "clear";
         tileClears--;
+        getPerimeter(idx);
     } else {
         if (
-            board[idx].classList.contains("good") &&
-            !board[idx].classList.contains("flag")
+            marks.contains("good") &&
+            !marks.contains("flag")
         ) {
             board[idx].className = "clear";
             tileClears--;
-        } else if (board[idx].classList.contains("bad")) {
+            getPerimeter(idx);
+        } else if (marks.contains("bad")) {
             board[idx].className = "mine";
             playBtn.textContent = "):";
             playBtn.id = "retry";
@@ -88,17 +124,21 @@ function handleClick(evt) {
     render();
 }
 
+
+
 function handleFlag(evt) {
     evt.preventDefault();
     const idx = tileEls.indexOf(evt.target);
+    const marks = board[idx].classList;
     if (
         gameStatus !== null ||
         !tileEls.includes(evt.target) ||
-        board[idx].classList.contains("clear")
+        marks.contains("clear")
     ) return;
-    if (!board[idx].classList.contains("flag")) { 
-        board[idx].classList.add("flag");
+    if (!marks.contains("flag")) {
+        marks.add("flag");
     } else {
-        board[idx].classList.remove("flag");
+        marks.remove("flag");
     }
+    render();
 }
