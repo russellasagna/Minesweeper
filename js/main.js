@@ -10,14 +10,10 @@ let tileMines; // number of mines set by init()
 let timeStatus; // 0 -> off; 1 -> on;
 let timeElapsed; // Number to count seconds in realtime
 let gameStatus; // null -> game ready; 'W' -> won; 'L' -> lostlet upup = board[idx - boardSize];
-let upLeft; // direction from click position
-let upRight; // direction from click position
-let left; // direction from click position
-let right; // direction from click position
-let downLeft; // direction from click position
-let downDown; // direction from click position
-let downRight; // direction from click position
-let directions; // array of directions from click position
+let directions; // Array of directs
+let directs; // Object of directions from click position
+let space; // size of safe tiles after first click
+let rnd; // number randomizer
 
 /*----- cached element references -----*/
 const tileEls = [...document.querySelectorAll("#board > div")]; // spread
@@ -41,6 +37,7 @@ function init() {
     timeElapsed = 0;
     gameStatus = null;
     directions = [];
+    directs = {};
     boardSize = 9;
     board = [...document.querySelectorAll("#board > div")];
     // map mines below
@@ -77,31 +74,35 @@ function renderMines() {
 function renderSpace(evt) {
     const idx = tileEls.indexOf(evt.target);
     let space = 10;
-    getPerimeter(idx);
-    while (directions.length > 0) {
-        let direction = directions[Math.floor(Math.random() * directions.length)];
-        console.log("Safe Tile: " + idx);
-        if (direction.classList.contains("good")) {
-            direction.className = "clear";
-            console.log("Space Tile: " + board.indexOf(direction));
+    let rnd = Math.floor(Math.random() * 2) // for getPerimeter(); 
+    while (space > 0) {
+        getPerimeter(idx);
+        while (directions.length > 0) {
+            let direction = directions[Math.floor(Math.random() * directions.length)];
+            console.log("Safe Tile: " + idx);
+            if (direction.classList.contains("good")) {
+                direction.className = "clear";
+                console.log("Space Tile: " + board.indexOf(direction));
+            }
+            directions.splice(directions.indexOf(direction), 1);
         }
-        directions.splice(directions.indexOf(direction), 1);
+        space--;
     }
 }
 
 function getPerimeter(idx) {
-    upup = board[idx - boardSize];
-    upLeft = board[idx - boardSize - 1];
-    upRight = board[idx - boardSize + 1];
-    left = board[idx - 1];
-    right = board[idx + 1];
-    downDown = board[idx + boardSize];
-    downLeft = board[idx + boardSize - 1];
-    downRight = board[idx + boardSize + 1];
+    directs.upup = board[idx - boardSize];
+    directs.upLeft = board[idx - boardSize - 1];
+    directs.upRight = board[idx - boardSize + 1];
+    directs.left = board[idx - 1];
+    directs.right = board[idx + 1];
+    directs.downDown = board[idx + boardSize];
+    directs.downLeft = board[idx + boardSize - 1];
+    directs.downRight = board[idx + boardSize + 1];
     directions.unshift(
-        upup, upLeft, upRight, 
-        left, right,
-        downDown, downLeft, downRight
+        directs.upup, directs.upLeft, directs.upRight,
+        directs.left, directs.right,
+        directs.downDown, directs.downLeft, directs.downRight
     );
 }
 
