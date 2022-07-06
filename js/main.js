@@ -66,7 +66,7 @@ function render() {
 }
 
 function renderMines() {
-    board.forEach(function(tile) {
+    board.forEach(function (tile) {
         if (tile.classList.contains("bad")) {
             tile.className = "mine";
         }
@@ -102,6 +102,7 @@ function renderSpace(evt) {
 }
 
 function getPerimeter(idx) {
+    directs.center = board[idx];
     directs.upup = board[idx - boardSize];
     directs.upLeft = board[idx - boardSize - 1];
     directs.upRight = board[idx - boardSize + 1];
@@ -111,12 +112,17 @@ function getPerimeter(idx) {
     directs.downLeft = board[idx + boardSize - 1];
     directs.downRight = board[idx + boardSize + 1];
 
-    // for readability, unshifts into array
-    directions.unshift(
-        directs.upup, directs.upLeft, directs.upRight,
-        directs.left, directs.right,
-        directs.downDown, directs.downLeft, directs.downRight
-    );
+    // for readability, and unshifts "perimeter" into array
+    if (idx > boardSize)
+        directions.unshift(
+            directs.upup, directs.upLeft, directs.upRight
+        );
+    if (idx < board.length - boardSize)
+        directions.unshift(
+            directs.downDown, directs.downLeft, directs.downRight
+        );
+    directions.unshift(directs.left, directs.right);
+    return board.indexOf(directs.center);
 }
 
 function handleClick(evt) {
