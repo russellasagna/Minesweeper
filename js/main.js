@@ -5,13 +5,12 @@
 
 /*----- app's state (variables) -----*/
 let board; // one-dimensional array, for spread syntax
-let boardMap; // two-dimensional array
 let boardSize; // size of board, squared in init()
 let tileClears; // number of clears set by init()
 let tileMines; // number of mines set by init()
 let timeStatus; // 0 -> off; 1 -> on;
 let timeElapsed; // Number to count seconds in realtime
-let gameStatus; // null -> game ready; 'W' -> won; 'L' -> lostlet upup = board[idx - boardSize];
+let gameStatus; // null -> game ready; 'W' -> won; 'L' -> lost
 let directions; // Array of directs
 let directs; // Object of directions from click position
 let space; // size of safe tiles after first click
@@ -45,8 +44,8 @@ function init() {
     // map mines below
     board.forEach(function (tile) {
         tile.className = "";
-        let chance = Math.floor(Math.random() * 100);
-        if (chance < 15) { // #/10 the tile is a mine
+        rnd = Math.floor(Math.random() * 100);
+        if (rnd < 15) { // #/10 the tile is a mine
             tile.classList.add("bad");
             tileMines++;
         } else {
@@ -81,18 +80,19 @@ function renderSpace(evt) {
     // if (idx < boardSize + 1 || idx > board.length - boardSize - 1) {
     //     space = 20;
     // }
+    console.log("Safe Tile: " + idx);
     while (space > 0) {
-        let rnd = Math.floor(Math.random() * 10 + 1) // for getPerimeter(); 
-        let pwr = Math.floor(Math.random() * 2 + 1);
+        rnd = Math.floor(Math.random() * 10 + 1) // for getPerimeter(); 
+        pwr = Math.floor(Math.random() * 2 + 1);
         rnd *= Math.pow(-1, pwr);
         getPerimeter(idx + rnd);
         while (directions.length > 0) {
-            let direction = directions[Math.floor(Math.random() * directions.length)];
-            console.log("Safe Tile: " + idx);
+            direction = directions[Math.floor(Math.random() * directions.length)];
             if (direction.classList.contains("good")) {
                 direction.className = "clear";
                 console.log("Space Tile: " + board.indexOf(direction));
             }
+            // remove the last used direction
             directions.splice(directions.indexOf(direction), 1);
         }
         space--;
@@ -110,6 +110,8 @@ function getPerimeter(idx) {
     directs.downDown = board[idx + boardSize];
     directs.downLeft = board[idx + boardSize - 1];
     directs.downRight = board[idx + boardSize + 1];
+
+    // for readability, unshifts into array
     directions.unshift(
         directs.upup, directs.upLeft, directs.upRight,
         directs.left, directs.right,
@@ -119,12 +121,13 @@ function getPerimeter(idx) {
 
 function handleClick(evt) {
     const idx = tileEls.indexOf(evt.target);
-    const marks = board[idx].classList;
+    const marks = board[idx].classList; // for readability
     // Guards
     if (
         gameStatus !== null ||
         !tileEls.includes(evt.target) ||
-        marks.contains("flag")
+        marks.contains("flag") ||
+        marks.contains("clear")
     ) return;
     // update tile when clicked
     if (tileClears + tileMines === Math.pow(boardSize, 2)) { // first tile is safe
