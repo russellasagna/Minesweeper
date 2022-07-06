@@ -81,7 +81,7 @@ function renderSpace(evt) {
     // }
     console.log("Safe Tile: " + idx);
     while (space > 0) {
-        rnd = Math.floor(Math.random() * 10 + 1) // for getPerimeter(); 
+        rnd = Math.floor(Math.random() * space + 1) // for getPerimeter(); 
         pwr = Math.floor(Math.random() * 2 + 1);
         rnd *= Math.pow(-1, pwr);
         getPerimeter(idx + rnd);
@@ -99,8 +99,6 @@ function renderSpace(evt) {
         }
         space--;
     }
-    // console.log(rnd);
-    // console.log(pwr);
 }
 
 function getPerimeter(idx) {
