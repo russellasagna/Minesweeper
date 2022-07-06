@@ -65,17 +65,22 @@ function init() {
 
 function render() {
     // update tiles nearby mines using array logic
-    renderMines();
 }
 
 function renderMines() {
-    // Guards
-
+    board.forEach(function(tile) {
+        if (tile.classList.contains("bad")) {
+            tile.className = "mine";
+        }
+    });
 }
 
 function renderSpace(evt) {
     const idx = tileEls.indexOf(evt.target);
-    let space = boardSize / 2;
+    space = boardSize / 2;
+    // if (idx < boardSize + 1 || idx > board.length - boardSize - 1) {
+    //     space = 20;
+    // }
     while (space > 0) {
         let rnd = Math.floor(Math.random() * 10 + 1) // for getPerimeter(); 
         let pwr = Math.floor(Math.random() * 2 + 1);
@@ -92,8 +97,8 @@ function renderSpace(evt) {
         }
         space--;
     }
-    console.log(rnd);
-    console.log(pwr);
+    // console.log(rnd);
+    // console.log(pwr);
 }
 
 function getPerimeter(idx) {
@@ -140,6 +145,7 @@ function handleClick(evt) {
             playBtn.textContent = "):";
             playBtn.id = "retry";
             gameStatus = "L";
+            renderMines();
         }
     }
     render();
