@@ -73,10 +73,12 @@ function renderMines() {
 
 function renderSpace(evt) {
     const idx = tileEls.indexOf(evt.target);
-    let space = 10;
-    let rnd = Math.floor(Math.random() * 2) // for getPerimeter(); 
+    let space = boardSize / 2;
     while (space > 0) {
-        getPerimeter(idx);
+        let rnd = Math.floor(Math.random() * 10 + 1) // for getPerimeter(); 
+        let pwr = Math.floor(Math.random() * 2 + 1);
+        rnd *= Math.pow(-1, pwr);
+        getPerimeter(idx + rnd);
         while (directions.length > 0) {
             let direction = directions[Math.floor(Math.random() * directions.length)];
             console.log("Safe Tile: " + idx);
@@ -88,6 +90,8 @@ function renderSpace(evt) {
         }
         space--;
     }
+    console.log(rnd);
+    console.log(pwr);
 }
 
 function getPerimeter(idx) {
