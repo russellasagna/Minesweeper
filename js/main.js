@@ -4,7 +4,6 @@
 
 
 /*----- app's state (variables) -----*/
-let board; // one-dimensional array, for spread syntax
 let boardSize; // size of board, squared in init()
 let tileClears; // number of clears set by init()
 let tileMines; // number of mines set by init()
@@ -17,7 +16,7 @@ let space; // size of safe tiles after first click
 let rnd; // number randomizer
 
 /*----- cached element references -----*/
-const tileEls = [...document.querySelectorAll("#board > div")]; // spread
+const board = [...document.querySelectorAll("#board > div")]; // spread
 const playBtn = document.getElementById("play");
 
 /*----- event listeners -----*/
@@ -40,7 +39,7 @@ function init() {
     directions = [];
     directs = {};
     boardSize = 9;
-    board = [...document.querySelectorAll("#board > div")];
+    // board = [...document.querySelectorAll("#board > div")];
     // map mines below
     board.forEach(function (tile) {
         tile.className = "";
@@ -75,7 +74,7 @@ function renderMines() {
 }
 
 function renderSpace(evt) {
-    const idx = tileEls.indexOf(evt.target);
+    const idx = board.indexOf(evt.target);
     space = boardSize / 2;
     // if (idx < boardSize + 1 || idx > board.length - boardSize - 1) {
     //     space = 20;
@@ -88,7 +87,10 @@ function renderSpace(evt) {
         getPerimeter(idx + rnd);
         while (directions.length > 0) {
             direction = directions[Math.floor(Math.random() * directions.length)];
-            if (direction.classList.contains("good")) {
+            if (
+                direction.classList.contains("good") &&
+                !direction.classList.contains("flag")
+            ) {
                 direction.className = "clear";
                 console.log("Space Tile: " + board.indexOf(direction));
             }
@@ -120,12 +122,12 @@ function getPerimeter(idx) {
 }
 
 function handleClick(evt) {
-    const idx = tileEls.indexOf(evt.target);
+    const idx = board.indexOf(evt.target);
     const marks = board[idx].classList; // for readability
     // Guards
     if (
         gameStatus !== null ||
-        !tileEls.includes(evt.target) ||
+        !board.includes(evt.target) ||
         marks.contains("flag") ||
         marks.contains("clear")
     ) return;
@@ -156,11 +158,11 @@ function handleClick(evt) {
 
 function handleFlag(evt) {
     evt.preventDefault();
-    const idx = tileEls.indexOf(evt.target);
+    const idx = board.indexOf(evt.target);
     const marks = board[idx].classList;
     if (
         gameStatus !== null ||
-        !tileEls.includes(evt.target) ||
+        !board.includes(evt.target) ||
         marks.contains("clear")
     ) return;
     if (!marks.contains("flag")) {
