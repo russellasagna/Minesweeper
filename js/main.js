@@ -46,7 +46,7 @@ function init() {
         } else {
             tile.classList.add("good");
             tileClears++;
-        }
+        } 
     });
     if (tileMines === 0) {
         console.error("No chance! Adding a mine:");
