@@ -89,7 +89,7 @@ function renderSpace(evt) {
         rnd *= Math.pow(-1, pwr);
         getPerimeter(idx + rnd);
         while (directions.length > 0) {
-            direction = directions[Math.floor(Math.random() * directions.length)];
+            let direction = directions[Math.floor(Math.random() * directions.length)];
             if (
                 direction.classList.contains("good") &&
                 !direction.classList.contains("flag")
@@ -105,22 +105,8 @@ function renderSpace(evt) {
     }
 }
 
-function renderNumbers() {
-    board.forEach(function(tile) {
-        getNumber(idx);
-        console.log(board.indexOf(directs.center));
-        while (directions.length > 0) {
-            direction = directions[0];
-            if (direction.classList.contains("bad")) {
-                // tile.textContent = `${parseInt(tile.textContent) + 1}`;
-            }
-            // remove the last used direction
-            directions.splice(directions.indexOf(direction), 1);
-        }
-    });
-}
-
 function getPerimeter(idx) {
+    directions = [];
     directs.center = board[idx];
     directs.upup = board[idx - boardSize];
     directs.upLeft = board[idx - boardSize - 1];
@@ -142,28 +128,6 @@ function getPerimeter(idx) {
         );
     directions.unshift(directs.left, directs.right);
     return board.indexOf(directs.center);
-}
-
-function getNumber(idx) {
-    directs.center = board[idx];
-    directs.upup = board[idx - boardSize];
-    directs.upLeft = board[idx - boardSize - 1];
-    directs.upRight = board[idx - boardSize + 1];
-    directs.left = board[idx - 1];
-    directs.right = board[idx + 1];
-    directs.downDown = board[idx + boardSize];
-    directs.downLeft = board[idx + boardSize - 1];
-    directs.downRight = board[idx + boardSize + 1];
-    // for readability, and unshifts "perimeter" into array
-    if (idx > boardSize)
-        directions.unshift(
-            directs.upup, directs.upLeft, directs.upRight
-        );
-    if (idx < board.length - boardSize)
-        directions.unshift(
-            directs.downDown, directs.downLeft, directs.downRight
-        );
-    directions.unshift(directs.left, directs.right);
 }
 
 function handleClick(evt) {
