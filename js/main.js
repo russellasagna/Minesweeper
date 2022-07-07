@@ -64,7 +64,7 @@ function init() {
 }
 
 function render() {
-    // update tiles' nearby mines using array logic
+
 }
 
 function renderMines() {
@@ -146,7 +146,6 @@ function handleClick(evt) {
         tileClears--;
         getPerimeter(idx);
         renderSpace(evt);
-        renderNumbers(evt);
     } else {
         if (
             marks.contains("good") &&
