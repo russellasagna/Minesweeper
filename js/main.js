@@ -32,17 +32,14 @@ function init() {
     timeStatus = 0;
     timeElapsed = 0;
     gameStatus = null;
-    directions = [];
-    directs = {};
     boardSize = 9;
     boardSpace = [];
-    // board = [...document.querySelectorAll("#board > div")];
     // map mines below
     board.forEach(function (tile, idx) {
         tile.className = "";
         tile.textContent = "";
-        rnd = Math.floor(Math.random() * 100);
-        if (rnd < 100) { // #/10 the tile is a mine
+        rnd = Math.floor(Math.random() * board.length);
+        if (rnd < boardSize) { // chance that the tile is a mine
             tile.classList.add("bad");
             tileMines++;
             console.warn(`MINE (idx = ${idx})`);
@@ -51,13 +48,30 @@ function init() {
             tileClears++;
         }
     });
+    if (tileMines === 0) {
+        console.error("No chance! Adding a mine:");
+        rnd = Math.floor(Math.random() * board.length);
+        board[rnd].className = "bad";
+        tileMines++;
+        tileClears--;
+        console.warn(`MINE (idx = ${rnd})`);
+    }
     console.log("Mines: " + tileMines);
     console.log("Clears " + tileClears);
     render();
 }
 
 function render() {
-    renderNumbers();
+    if (tileMines === 0) {
+        gameStatus = "W";
+        playBtn.id = "win";
+        playBtn.textContent = ":D";
+        console.error("You win!");
+    } else if (gameStatus === "L") {
+        playBtn.id = "retry";
+        playBtn.textContent = "):";
+        console.error("You lose!");
+    }
 }
 
 function renderMines() {
@@ -97,12 +111,12 @@ function renderNumbers() {
                     console.log("bad up");
                 }
                 // upleft
-                if (board[i - 1 - boardSize].classList.contains("bad")) {
+                if (board[i - 1 - boardSize].classList.contains("bad") && i % boardSize !== 0) {
                     count++;
                     console.log("bad upleft");
                 }
                 // upright
-                if (board[i + 1 - boardSize].classList.contains("bad")) {
+                if (board[i + 1 - boardSize].classList.contains("bad") && (i + 1) % boardSize !== 0) {
                     count++;
                     console.log("bad upright");
                 }
@@ -114,12 +128,12 @@ function renderNumbers() {
                     console.log("bad down");
                 }
                 // downleft
-                if (board[i - 1 + boardSize].classList.contains("bad")) {
+                if (board[i - 1 + boardSize].classList.contains("bad") && i % boardSize !== 0) {
                     count++;
                     console.log("bad downleft");
                 }
                 // downright
-                if (board[i + 1 + boardSize].classList.contains("bad")) {
+                if (board[i + 1 + boardSize].classList.contains("bad") && (i + 1) % boardSize !== 0) {
                     count++;
                     console.log("bad downright");
                 }
@@ -157,12 +171,11 @@ function handleClick(evt) {
             console.log(idx);
         } else if (marks.contains("bad")) {
             board[idx].className = "mine";
-            playBtn.textContent = "):";
-            playBtn.id = "retry";
             gameStatus = "L";
             renderMines();
         }
     }
+    renderNumbers();
     render();
 }
 
@@ -178,8 +191,14 @@ function handleFlag(evt) {
     ) return;
     if (!marks.contains("flag")) {
         marks.add("flag");
+        if (marks.contains("bad")) {
+            tileMines--;
+        }
     } else {
         marks.remove("flag");
+        if (marks.contains("bad")) {
+            tileMines++;
+        }
     }
     render();
 }
