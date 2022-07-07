@@ -38,24 +38,21 @@ function init() {
     boardSpace = [];
     // board = [...document.querySelectorAll("#board > div")];
     // map mines below
-    board.forEach(function (tile) {
+    board.forEach(function (tile, idx) {
         tile.className = "";
         tile.textContent = "";
         rnd = Math.floor(Math.random() * 100);
-        if (rnd < 15) { // #/10 the tile is a mine
+        if (rnd < 100) { // #/10 the tile is a mine
             tile.classList.add("bad");
             tileMines++;
+            console.warn(`MINE (idx = ${idx})`);
         } else {
             tile.classList.add("good");
             tileClears++;
         }
     });
-    // after mapping mines, adjust state for first click being safe
-    tileClears++;
-    tileMines--;
-    // insert mines into array using -1
-    // insert safe tiles into array using 0
-
+    console.log("Mines: " + tileMines);
+    console.log("Clears " + tileClears);
     render();
 }
 
@@ -67,18 +64,67 @@ function renderMines() {
     board.forEach(function (tile) {
         if (tile.classList.contains("bad")) {
             tile.className = "mine";
-            tileMines--;
         }
     });
 }
 
 function renderNumbers() {
+    // Guards
+    if (
+        gameStatus === "L"
+    ) return;
     for (let i = 0; i < board.length; i++) {
+        let count = 0;
         if (board[i].classList.contains("clear")) {
-            board[i].textContent = "0";
-            if (board[i].classList.contains("bad")) {
-
+            // left
+            if (i % boardSize !== 0) {
+                if (board[i - 1].classList.contains("bad")) {
+                    count++;
+                    console.log("bad left");
+                }
             }
+            // right
+            if ((i + 1) % boardSize !== 0) {
+                if (board[i + 1].classList.contains("bad")) {
+                    count++;
+                    console.log("bad right");
+                }
+            }
+            if (i > boardSize) {
+                // up
+                if (board[i - boardSize].classList.contains("bad")) {
+                    count++;
+                    console.log("bad up");
+                }
+                // upleft
+                if (board[i - 1 - boardSize].classList.contains("bad")) {
+                    count++;
+                    console.log("bad upleft");
+                }
+                // upright
+                if (board[i + 1 - boardSize].classList.contains("bad")) {
+                    count++;
+                    console.log("bad upright");
+                }
+            }
+            if (i < board.length - boardSize - 1) {
+                // down
+                if (board[i + boardSize].classList.contains("bad")) {
+                    count++;
+                    console.log("bad down");
+                }
+                // downleft
+                if (board[i - 1 + boardSize].classList.contains("bad")) {
+                    count++;
+                    console.log("bad downleft");
+                }
+                // downright
+                if (board[i + 1 + boardSize].classList.contains("bad")) {
+                    count++;
+                    console.log("bad downright");
+                }
+            }
+            board[i].textContent = `${count}`;
         }
     }
 }
@@ -93,14 +139,14 @@ function handleClick(evt) {
         marks.contains("flag") ||
         marks.contains("clear")
     ) return;
-    renderNumbers();
     // update tile when clicked
     if (tileClears + tileMines === Math.pow(boardSize, 2)) { // first tile is safe
         board[idx].className = "clear";
         tileClears--;
+        console.log(idx);
         // experimental: 
-        // add getPerimeter() here; Commit 24 and earlier
-        // add renderSpace(evt) here; Commit 24 and earlier
+        // add getPerimeter() here; commit d8db3c5 and earlier
+        // add renderSpace(evt) here; Commit d8db3c5 and earlier
     } else {
         if (
             marks.contains("good") &&
@@ -108,6 +154,7 @@ function handleClick(evt) {
         ) {
             board[idx].className = "clear";
             tileClears--;
+            console.log(idx);
         } else if (marks.contains("bad")) {
             board[idx].className = "mine";
             playBtn.textContent = "):";
