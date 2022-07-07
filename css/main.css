@@ -12,6 +12,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     font-size: 4vmin;
+    user-select: none;
 }
 
 nav {
@@ -69,48 +70,54 @@ button {
 }
 
 #play {
-    background-color: white;
     color: black;
+    background-color: white;
     background-image: url("img/smiley.png");
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 #retry {
+    color: white;
+    background-color: black;
     background-image: url("img/frowny.png");
     background-repeat: no-repeat;
     background-size: cover;
-    background-color: black;
-    color: white;
 }
 
 #clicked {
-    background-image: url("img/clicked.png");
+    color: white;
+    background-color: black;
+    background-image: url("img/clicky.png");
     background-repeat: no-repeat;
     background-size: cover;
-    background-color: black;
-    background-position: -2px -1px;
-    color: white;
 }
 
 #win {
-    background-color: gold;
     color: black;
+    background-color: gold;
+    background-color: inherit;
+    background-image: url("img/sunny.png");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .mine {
-    background-color: black;
+    background-color: inherit;
+    background-image: url("img/mine.png");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .clear {
-    /* background-image: url("img/grass.png");
-    background-repeat: no-repeat;
-    background-size: cover; */
     background-color: white;
 }
 
 .flag {
-    background-color: red;
+    background-color: inherit;
+    background-image: url("img/flag.png");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .one {

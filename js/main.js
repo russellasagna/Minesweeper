@@ -18,8 +18,9 @@ const playBtn = document.getElementById("play");
 /*----- event listeners -----*/
 document.getElementById("board").addEventListener("click", handleClick);
 document.getElementById("board").addEventListener("contextmenu", handleFlag);
+document.getElementById("board").addEventListener("mousedown", handleMouseDown);
+document.getElementById("board").addEventListener("mouseup", handleMouseUp);
 document.getElementById("play").addEventListener("click", init);
-document.getElementById("play").addEventListener("mousedown", handlePlay);
 
 /*----- functions -----*/
 init();
@@ -221,18 +222,30 @@ function handleFlag(evt) {
     ) return;
     if (!marks.contains("flag")) {
         marks.add("flag");
-        if (marks.contains("bad")) {
-            tileMines--;
-        }
     } else {
         marks.remove("flag");
-        if (marks.contains("bad")) {
-            tileMines++;
-        }
     }
     render();
 }
 
-function handlePlay(evt) {
-    if (evt) playBtn.id = "clicked";
+function handleMouseDown(evt) {
+    const idx = board.indexOf(evt.target);
+    if (
+        gameStatus !== null ||
+        !board.includes(evt.target)
+    ) return;
+    if (evt) {
+        playBtn.id = "clicked";
+    }
+}
+
+function handleMouseUp(evt) {
+    const idx = board.indexOf(evt.target);
+    if (
+        gameStatus !== null ||
+        !board.includes(evt.target)
+    ) return;
+    if (evt) {
+        playBtn.id = "play";
+    }
 }
