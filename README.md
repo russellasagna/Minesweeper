@@ -1,7 +1,7 @@
-# <Minesweeper>
+# Minesweeper
 A description of your game. Background info of the game is a nice touch.
 
-# Screenshot
+# Screenshots
 
 <img src="url to your image on imgur">
 <img src="url to your image on imgur">
