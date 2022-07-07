@@ -9,9 +9,6 @@ let tileMines; // number of mines set by init()
 let timeStatus; // 0 -> off; 1 -> on;
 let timeElapsed; // Number to count seconds in realtime
 let gameStatus; // null -> game ready; 'W' -> won; 'L' -> lost
-let directions; // Array of directs
-let directs; // Object of directions from click position
-let space; // size of safe tiles after first click
 let rnd; // number randomizer
 
 /*----- cached element references -----*/
