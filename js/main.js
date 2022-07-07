@@ -55,7 +55,7 @@ function init() {
         tileMines++;
         tileClears--;
         console.warn(`MINE (idx = ${rnd})`);
-    }
+    } 
     console.log("Mines: " + tileMines);
     console.log("Clears " + tileClears);
     render();
