@@ -63,10 +63,31 @@ button {
 .mine {
     background-color: black;
 }
+
 .clear {
     background-color: white;
 }
 
 .flag {
     background-color: red;
+}
+
+.one {
+    color: #2F42D5;
+}
+
+.two {
+    color: #2FC61E;
+}
+
+.three {
+    color: #F2112F;
+}
+
+.four {
+    color: #6B009C;
+}
+
+.five {
+    color: #580909;
 }

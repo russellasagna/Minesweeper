@@ -5,6 +5,7 @@
 
 /*----- app's state (variables) -----*/
 let boardSize; // size of board, squared in init()
+let boardSpace; // for large tile clears
 let tileClears; // number of clears set by init()
 let tileMines; // number of mines set by init()
 let timeStatus; // 0 -> off; 1 -> on;
@@ -39,6 +40,7 @@ function init() {
     directions = [];
     directs = {};
     boardSize = 9;
+    boardSpace = [];
     // board = [...document.querySelectorAll("#board > div")];
     // map mines below
     board.forEach(function (tile) {
@@ -62,13 +64,14 @@ function init() {
 }
 
 function render() {
-    // update tiles nearby mines using array logic
+    // update tiles' nearby mines using array logic
 }
 
 function renderMines() {
     board.forEach(function (tile) {
         if (tile.classList.contains("bad")) {
             tile.className = "mine";
+            tileMines--;
         }
     });
 }
@@ -92,6 +95,7 @@ function renderSpace(evt) {
                 !direction.classList.contains("flag")
             ) {
                 direction.className = "clear";
+                tileClears--;
                 console.log("Space Tile: " + board.indexOf(direction));
             }
             // remove the last used direction
@@ -99,6 +103,21 @@ function renderSpace(evt) {
         }
         space--;
     }
+}
+
+function renderNumbers() {
+    board.forEach(function(tile) {
+        getNumber(idx);
+        console.log(board.indexOf(directs.center));
+        while (directions.length > 0) {
+            direction = directions[0];
+            if (direction.classList.contains("bad")) {
+                // tile.textContent = `${parseInt(tile.textContent) + 1}`;
+            }
+            // remove the last used direction
+            directions.splice(directions.indexOf(direction), 1);
+        }
+    });
 }
 
 function getPerimeter(idx) {
@@ -125,6 +144,28 @@ function getPerimeter(idx) {
     return board.indexOf(directs.center);
 }
 
+function getNumber(idx) {
+    directs.center = board[idx];
+    directs.upup = board[idx - boardSize];
+    directs.upLeft = board[idx - boardSize - 1];
+    directs.upRight = board[idx - boardSize + 1];
+    directs.left = board[idx - 1];
+    directs.right = board[idx + 1];
+    directs.downDown = board[idx + boardSize];
+    directs.downLeft = board[idx + boardSize - 1];
+    directs.downRight = board[idx + boardSize + 1];
+    // for readability, and unshifts "perimeter" into array
+    if (idx > boardSize)
+        directions.unshift(
+            directs.upup, directs.upLeft, directs.upRight
+        );
+    if (idx < board.length - boardSize)
+        directions.unshift(
+            directs.downDown, directs.downLeft, directs.downRight
+        );
+    directions.unshift(directs.left, directs.right);
+}
+
 function handleClick(evt) {
     const idx = board.indexOf(evt.target);
     const marks = board[idx].classList; // for readability
@@ -141,6 +182,7 @@ function handleClick(evt) {
         tileClears--;
         getPerimeter(idx);
         renderSpace(evt);
+        renderNumbers(evt);
     } else {
         if (
             marks.contains("good") &&
