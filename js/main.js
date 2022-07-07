@@ -19,13 +19,14 @@ const playBtn = document.getElementById("play");
 document.getElementById("board").addEventListener("click", handleClick);
 document.getElementById("board").addEventListener("contextmenu", handleFlag);
 document.getElementById("play").addEventListener("click", init);
+document.getElementById("play").addEventListener("mousedown", handlePlay);
 
 /*----- functions -----*/
 init();
 
 function init() {
     console.clear();
-    playBtn.textContent = ":)";
+    playBtn.textContent = "";
     playBtn.id = "play";
     tileClears = 0;
     tileMines = 0;
@@ -39,7 +40,7 @@ function init() {
         tile.className = "";
         tile.textContent = "";
         rnd = Math.floor(Math.random() * board.length);
-        if (rnd < boardSize) { // chance that the tile is a mine
+        if (rnd < boardSize) { // chance that the tile is a mine; use boardSize
             tile.classList.add("bad");
             tileMines++;
             console.warn(`MINE (idx = ${idx})`);
@@ -65,11 +66,11 @@ function render() {
     if (tileMines === 0 || tileClears === 0) {
         gameStatus = "W";
         playBtn.id = "win";
-        playBtn.textContent = ":D";
+        playBtn.textContent = "";
         console.error("You win!");
     } else if (gameStatus === "L") {
         playBtn.id = "retry";
-        playBtn.textContent = "):";
+        playBtn.textContent = "";
         console.error("You lose!");
     }
 }
@@ -141,6 +142,32 @@ function renderNumbers() {
             }
             if (count > 0) {
                 board[i].textContent = `${count}`;
+                switch (count) {
+                    case 1:
+                        board[i].classList.add("one");
+                        break;
+                    case 2:
+                        board[i].classList.add("two");
+                        break;
+                    case 3:
+                        board[i].classList.add("three");
+                        break;
+                    case 4:
+                        board[i].classList.add("four");
+                        break;
+                    case 6:
+                        board[i].classList.add("five");
+                        break;
+                    case 5:
+                        board[i].classList.add("six");
+                        break;
+                    case 7:
+                        board[i].classList.add("seven");
+                        break;
+                    case 8:
+                        board[i].classList.add("eight");
+                        break;
+                }
             }
         }
     }
@@ -204,4 +231,8 @@ function handleFlag(evt) {
         }
     }
     render();
+}
+
+function handlePlay(evt) {
+    if (evt) playBtn.id = "clicked";
 }
