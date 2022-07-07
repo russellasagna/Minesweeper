@@ -46,7 +46,7 @@ function init() {
         } else {
             tile.classList.add("good");
             tileClears++;
-        } 
+        }
     });
     if (tileMines === 0) {
         console.error("No chance! Adding a mine:");
@@ -55,14 +55,14 @@ function init() {
         tileMines++;
         tileClears--;
         console.warn(`MINE (idx = ${rnd})`);
-    } 
+    }
     console.log("Mines: " + tileMines);
     console.log("Clears " + tileClears);
     render();
 }
 
 function render() {
-    if (tileMines === 0) {
+    if (tileMines === 0 || tileClears === 0) {
         gameStatus = "W";
         playBtn.id = "win";
         playBtn.textContent = ":D";
@@ -139,7 +139,9 @@ function renderNumbers() {
                     console.log("bad downright");
                 }
             }
-            board[i].textContent = `${count}`;
+            if (count > 0) {
+                board[i].textContent = `${count}`;
+            }
         }
     }
 }
