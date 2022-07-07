@@ -87,6 +87,7 @@ function renderNumbers() {
     if (
         gameStatus === "L"
     ) return;
+    console.warn("Warning:");
     for (let i = 0; i < board.length; i++) {
         let count = 0;
         if (board[i].classList.contains("clear")) {
