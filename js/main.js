@@ -1,5 +1,3 @@
-// change
-
 /*----- constants -----*/
 
 
@@ -45,6 +43,7 @@ function init() {
     // map mines below
     board.forEach(function (tile) {
         tile.className = "";
+        tile.textContent = "";
         rnd = Math.floor(Math.random() * 100);
         if (rnd < 15) { // #/10 the tile is a mine
             tile.classList.add("bad");
@@ -64,7 +63,7 @@ function init() {
 }
 
 function render() {
-
+    renderNumbers();
 }
 
 function renderMines() {
@@ -76,58 +75,15 @@ function renderMines() {
     });
 }
 
-function renderSpace(evt) {
-    const idx = board.indexOf(evt.target);
-    space = boardSize / 2;
-    // if (idx < boardSize + 1 || idx > board.length - boardSize - 1) {
-    //     space = 20;
-    // }
-    console.log("Safe Tile: " + idx);
-    while (space > 0) {
-        rnd = Math.floor(Math.random() * space + 1) // for getPerimeter(); 
-        pwr = Math.floor(Math.random() * 2 + 1);
-        rnd *= Math.pow(-1, pwr);
-        getPerimeter(idx + rnd);
-        while (directions.length > 0) {
-            let direction = directions[Math.floor(Math.random() * directions.length)];
-            if (
-                direction.classList.contains("good") &&
-                !direction.classList.contains("flag")
-            ) {
-                direction.className = "clear";
-                tileClears--;
-                console.log("Space Tile: " + board.indexOf(direction));
+function renderNumbers() {
+    for (let i = 0; i < board.length; i++) {
+        if (board[i].classList.contains("clear")) {
+            board[i].textContent = "0";
+            if (board[i].classList.contains("bad")) {
+
             }
-            // remove the last used direction
-            directions.splice(directions.indexOf(direction), 1);
         }
-        space--;
     }
-}
-
-function getPerimeter(idx) {
-    directions = [];
-    directs.center = board[idx];
-    directs.upup = board[idx - boardSize];
-    directs.upLeft = board[idx - boardSize - 1];
-    directs.upRight = board[idx - boardSize + 1];
-    directs.left = board[idx - 1];
-    directs.right = board[idx + 1];
-    directs.downDown = board[idx + boardSize];
-    directs.downLeft = board[idx + boardSize - 1];
-    directs.downRight = board[idx + boardSize + 1];
-
-    // for readability, and unshifts "perimeter" into array
-    if (idx > boardSize)
-        directions.unshift(
-            directs.upup, directs.upLeft, directs.upRight
-        );
-    if (idx < board.length - boardSize)
-        directions.unshift(
-            directs.downDown, directs.downLeft, directs.downRight
-        );
-    directions.unshift(directs.left, directs.right);
-    return board.indexOf(directs.center);
 }
 
 function handleClick(evt) {
@@ -140,12 +96,14 @@ function handleClick(evt) {
         marks.contains("flag") ||
         marks.contains("clear")
     ) return;
+    renderNumbers();
     // update tile when clicked
     if (tileClears + tileMines === Math.pow(boardSize, 2)) { // first tile is safe
         board[idx].className = "clear";
         tileClears--;
-        getPerimeter(idx);
-        renderSpace(evt);
+        // experimental: 
+        // add getPerimeter() here; Commit 24 and earlier
+        // add renderSpace(evt) here; Commit 24 and earlier
     } else {
         if (
             marks.contains("good") &&
@@ -153,7 +111,6 @@ function handleClick(evt) {
         ) {
             board[idx].className = "clear";
             tileClears--;
-            getPerimeter(idx);
         } else if (marks.contains("bad")) {
             board[idx].className = "mine";
             playBtn.textContent = "):";
@@ -169,6 +126,7 @@ function handleFlag(evt) {
     evt.preventDefault();
     const idx = board.indexOf(evt.target);
     const marks = board[idx].classList;
+    // Guards
     if (
         gameStatus !== null ||
         !board.includes(evt.target) ||
