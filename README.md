@@ -3,8 +3,10 @@ Minesweeper is a game where mines are hidden underneath a grid of tiles! The goa
 
 # Screenshots
 
-<img src="url to your image on imgur">
-<img src="url to your image on imgur">
+<img src="https://imgur.com/dfy468V">
+<img src="https://imgur.com/zLzYyU2">
+<img src="https://imgur.com/5dNQNIB">
+<img src="https://imgur.com/mVDPhjC">
 
 # Technologies Used
 

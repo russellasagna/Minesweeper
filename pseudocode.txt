@@ -1,0 +1,27 @@
+Minesweeper
+
+- User loads game
+
+- Show title "Minesweeper", replay button ":)"
+
+- Show CSS flexbox/grid of board, 9x9
+
+- Generate closed tiles across board
+
+- Assign mines to board and store them in an array
+
+- First clicked tile is safe; opens the tile clicked, reports nearby mines, and starts timer
+
+- But after first click, by 50-50 chance, opens a perimeter around clicked tile
+
+- If no perimeter, user has to choose from the tiles surrounding the clicked tile
+
+- If there is a perimeter, board reports nearby mines along perimeter
+
+- End game if mine is clicked or only mines are left
+
+- Flags help prevent mines from being clicked
+
+- Display the win logic using the smiley face
+
+- Click the smiley to restart
