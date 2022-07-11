@@ -152,8 +152,8 @@ function renderFlood(i) {
                     i--;
                 }
             }
+            render();
         }
-        render();
     }
 }
 
