@@ -33,6 +33,7 @@ Minesweeper originated as early as the 1960s and 1970s. When Microsoft Minesweep
 
 # Next Steps
 
+- Transition to a more "data-centric" approach by storing Objects/Arrays instead of DOM elements
 - Use a rectangular board (m x n)
 - Render tiles using the DOM (larger board sizes, higher difficulty)
 - Add a sweep of tiles at the first click event
