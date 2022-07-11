@@ -1,3 +1,6 @@
+// NEXT STEPS
+// Data-centric approach (store Objects/Arrays instead of DOM elements)
+
 /*----- constants -----*/
 
 
@@ -73,6 +76,85 @@ function renderMines() {
             tile.className = "mine";
         }
     });
+}
+
+function renderFlood(i) {
+    let count = 100;
+    if (board[i].classList.contains("clear")) {
+        // left
+        while (count > 0) {
+            if (i % boardSize !== 0) {
+                if (board[i - 1].classList.contains("good")) {
+                    board[i - 1].className = "clear";
+                } else {
+                    count--;
+                    i = i - 1;
+                    i++;
+                }
+            }
+            // right
+            if ((i + 1) % boardSize !== 0) {
+                if (board[i + 1].classList.contains("good")) {
+                    board[i + 1].className = "clear";
+                } else {
+                    count--;
+                    i = i + 1;
+                    i--;
+                }
+            }
+            if (i > boardSize) {
+                // up
+                if (board[i - boardSize].classList.contains("good")) {
+                    board[i - boardSize].className = "clear";
+                } else {
+                    count--;
+                    i = i - boardSize;
+                }
+                // upleft
+                if (board[i - 1 - boardSize].classList.contains("good") && i % boardSize !== 0) {
+                    board[i - 1 - boardSize].classList.add("clear");
+                } else {
+                    count--;
+                    i = i - 1 - boardSize;
+                    i++;
+                }
+                // upright
+                if (board[i + 1 - boardSize].classList.contains("good") && (i + 1) % boardSize !== 0) {
+                    board[i + 1 - boardSize].classList.add("clear");
+                } else {
+                    count--;
+                    i = i + 1 - boardSize;
+                    i--;
+                }
+            }
+            if (i < board.length - boardSize - 1) {
+                // down
+                if (board[i + boardSize].classList.contains("good")) {
+                    board[i + boardSize].classList.add("clear");
+                } else {
+                    count--;
+                    i = i + boardSize;
+                }
+                // downleft
+                if (board[i - 1 + boardSize].classList.contains("good") && i % boardSize !== 0) {
+                    board[i - 1 + boardSize].classList.add("clear");
+                } else {
+                    count--;
+                    i = i - 1 + boardSize;
+                    i++;
+                }
+                // downright
+                if (board[i + 1 + boardSize].classList.contains("good") && (i + 1) % boardSize !== 0) {
+                    board[i + 1 + boardSize].classList.add("clear");
+                } else {
+                    count--;
+                    i = i + 1 + boardSize;
+                    i--;
+                }
+            }
+        }
+        render();
+    }
 }
 
 // updates each tile with adjacent mine count
@@ -184,6 +266,7 @@ function handleClick(evt) {
             gameStatus = "L";
         }
     }
+    renderFlood(idx);
     render();
 }
 
