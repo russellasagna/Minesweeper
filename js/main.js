@@ -59,7 +59,6 @@ function init() {
 
 // updates board every tile click
 function render() {
-    renderNumbers();
     if (tileMines === 0 || tileClears === 0) {
         gameStatus = "W";
         playBtn.id = "win";
@@ -152,13 +151,13 @@ function renderFlood(i) {
                     i--;
                 }
             }
-            render();
         }
+        render();
     }
 }
 
 // updates each tile with adjacent mine count
-function renderNumbers() {
+function renderNumbers(idx) {
     // Guards
     if (
         gameStatus === "L"
@@ -234,6 +233,8 @@ function renderNumbers() {
                         board[i].classList.add("eight");
                         break;
                 }
+            } else {
+                renderFlood(idx);
             }
         }
     }
@@ -266,7 +267,7 @@ function handleClick(evt) {
             gameStatus = "L";
         }
     }
-    renderFlood(idx);
+    renderNumbers(idx);
     render();
 }
 
